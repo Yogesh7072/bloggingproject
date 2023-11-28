@@ -27,6 +27,9 @@ public class UserController {
 
 			logger.info("createUser request payload" + user);
 			UserDto saveUser = userService.saveUser(user);
+
+			System.out.println("check git configration feature " + user);
+
 			System.out.println("userService class response" + saveUser);
 
 			if (saveUser != null) {
