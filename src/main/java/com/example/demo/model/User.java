@@ -1,18 +1,33 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
+@Table(name = "User_details", uniqueConstraints = { @UniqueConstraint(columnNames = "gmailId") })
 public class User {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int uid;
 	private String uname;
 	private String password;
 	private String uAddress;
 	@Column(unique = true)
 	private String gmailId;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+List<Post> post = new ArrayList<Post>();
 
 	public User() {
 		super();

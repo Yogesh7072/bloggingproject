@@ -1,6 +1,9 @@
 package com.example.demo.service.serviceImp;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +18,38 @@ public class UserServiceImp implements UserServices {
 	Logger logger = Logger.getLogger(UserServiceImp.class);
 
 	@Autowired
-	UserDao userdao;
+	private UserDao userdao;
 
 	@Override
 	public UserDto saveUser(UserDto userDto) {
 
-		logger.info("request object  :   " + userDto);
+		logger.info(" start saveUser method request object  :   " + userDto);
 
-		logger.info("start saveUser method");
-		User user = this.setUserDtoToUser(userDto);
-		try {
+	
+
+			User user = this.setUserDtoToUser(userDto);
+
 			User save = userdao.createUser(user);
-			UserDto userDt = this.setUserToUserDto(user);
+			UserDto userDt = this.setUserToUserDto(save);
 			logger.info("end saveUser method response object : " + userDt);
+
+			return userDt;
+
+	
+
+	}
+
+	@Override
+	public UserDto updateUser(UserDto userDto) {
+		// TODO Auto-generated method stub
+		logger.info("start updateUser method response object : " + userDto);
+
+		try {
+
+			User user = userdao.updateUsers(userDto);
+
+			UserDto userDt = this.setUserToUserDto(user);
+			logger.info("end updateUser method response object : " + userDt);
 
 			return userDt;
 
@@ -37,31 +59,61 @@ public class UserServiceImp implements UserServices {
 			return null;
 
 		}
+	}
 
+	@Override
+	public void deleteUser(int uid) {
+
+		try {
+
+			userdao.deleteUser(uid);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public UserDto getUserById(int uid) {
+		// TODO Auto-generated method stub
+
+		User user = userdao.getuserById(uid);
+		if (user != null) {
+			UserDto setUserToUserDto = this.setUserToUserDto(user);
+
+			return setUserToUserDto;
+		}
+		return null;
+	}
+
+	@Override
+	public List<UserDto> getAllUser() {
+		// TODO Auto-generated method stub
+
+		return userdao.getAllUser();
 	}
 
 	public User setUserDtoToUser(UserDto userDto) {
 
 		User user = new User();
-		user.setGmailId(userDto.getGmailId());
-		user.setUname(userDto.getUname());
-		user.setPassword(userDto.getPassword());
-		user.setUid(userDto.getUid());
-		user.setuAddress(userDto.getuAddress());
 
-		return user;
+		ModelMapper users = new ModelMapper();
+		User map = users.map(userDto, user.getClass());
+		System.out.println("setUserDtoToUser :  " + map);
+
+		return map;
 
 	}
 
 	public UserDto setUserToUserDto(User user) {
 
 		UserDto userdto = new UserDto();
-		userdto.setGmailId(user.getGmailId());
-		userdto.setUname(user.getUname());
-		userdto.setPassword(user.getPassword());
-		userdto.setUid(user.getUid());
-		userdto.setuAddress(user.getuAddress());
-		return userdto;
+
+		UserDto map2 = new ModelMapper().map(user, userdto.getClass());
+		System.out.println("setUserToUserDto :  " + map2);
+		return map2;
 
 	}
 

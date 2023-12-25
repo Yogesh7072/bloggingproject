@@ -1,11 +1,21 @@
 package com.example.demo.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserDto {
 
 	private int uid;
+	@NotEmpty
 	private String uname;
+	@NotEmpty
+	@Size(min = 6, max = 15, message = " provide with number 6 to 15 char")
 	private String password;
+	@NotNull
 	private String uAddress;
+	@Email
 	private String gmailId;
 
 	public UserDto() {
