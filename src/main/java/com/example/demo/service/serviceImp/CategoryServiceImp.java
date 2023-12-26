@@ -46,13 +46,16 @@ public class CategoryServiceImp implements CategoryService {
 
 	@Override
 	public CategoryDto updateCategory(CategoryDto dto, Integer catagoryId) {
+		System.out.println("updatedCategory start  : " + dto);
 
 		CategoryDto oldObjectcategoryDto = categoryDao.getCategory(catagoryId);
+		System.out.println("oldObjectcategoryDto   : " + oldObjectcategoryDto);
 
 		oldObjectcategoryDto.setCategoryTitle(dto.getCategoryTitle());
 		oldObjectcategoryDto.setCategoryDiscription(dto.getCategoryDiscription());
 		CategoryDto updatedCategoryObject = categoryDao.updateCategory(oldObjectcategoryDto);
 
+		System.out.println("updatedCategoryObject  : " + updatedCategoryObject);
 		return updatedCategoryObject;
 	}
 

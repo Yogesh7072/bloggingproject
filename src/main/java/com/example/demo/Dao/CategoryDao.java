@@ -34,6 +34,7 @@ public class CategoryDao {
 	public CategoryDto updateCategory(CategoryDto dto) {
 		// TODO Auto-generated method stub
 		try {
+			System.out.println("updateCategory dao" + dto);
 			Category category = map.map(dto, Category.class);
 			Category save = categoryRepo.save(category);
 			CategoryDto categoryDto = map.map(save, CategoryDto.class);
